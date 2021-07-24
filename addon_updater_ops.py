@@ -27,7 +27,7 @@ import traceback
 import bpy
 from bpy.app.handlers import persistent
 
-_package = "io_mesh_w3d"
+_package = ''
 
 # updater import, import safely
 # Prevents popups for users with invalid python installs e.g. missing libraries
@@ -62,8 +62,7 @@ except Exception as e:
 # Must declare this before classes are loaded
 # otherwise the bl_idname's will not match and have errors.
 # Must be all lowercase and no spaces
-updater.addon = 'io_mesh_w3d'
-
+updater.addon = "addon_updater_demo"
 
 # -----------------------------------------------------------------------------
 # Blender version utils
@@ -1336,21 +1335,21 @@ def register(bl_info):
 	updater.private_token = None # "tokenstring"
 
 	# choose your own username, must match website (not needed for GitLab)
-	updater.user = "OpenSAGE"
+	updater.user = "cgcookie"
 
 	# choose your own repository, must match git name for GitHUb and Bitbucket,
 	# for GitLab use project ID (numbers only)
-	updater.repo = "OpenSAGE.BlenderPlugin"
+	updater.repo = "blender-addon-updater"
 
 	#updater.addon = # define at top of module, MUST be done first
 
 	# Website for manual addon download, optional but recommended to set
-	updater.website = "https://github.com/OpenSAGE/OpenSAGE.BlenderPlugin"
+	updater.website = "https://github.com/CGCookie/blender-addon-updater/"
 
 	# Addon subfolder path
 	# "sample/path/to/addon"
 	# default is "" or None, meaning root
-	updater.subfolder_path = "io_mesh_w3d"
+	updater.subfolder_path = ""
 
 	# used to check/compare versions
 	updater.current_version = bl_info["version"]
@@ -1437,7 +1436,7 @@ def register(bl_info):
 	# updater.include_branch_list defaults to ['master'] branch if set to none
 	# example targeting another multiple branches allowed to pull from
 	# updater.include_branch_list = ['master', 'dev'] # example with two branches
-	updater.include_branch_list = ['master']  # None is the equivalent to setting ['master']
+	updater.include_branch_list = None  # None is the equivalent to setting ['master']
 
 	# Only allow manual install, thus prompting the user to open
 	# the addon's web page to download, specifically: updater.website
