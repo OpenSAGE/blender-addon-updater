@@ -27,6 +27,8 @@ import traceback
 import bpy
 from bpy.app.handlers import persistent
 
+_package = "io_mesh_w3d"
+
 # updater import, import safely
 # Prevents popups for users with invalid python installs e.g. missing libraries
 try:
@@ -60,7 +62,7 @@ except Exception as e:
 # Must declare this before classes are loaded
 # otherwise the bl_idname's will not match and have errors.
 # Must be all lowercase and no spaces
-updater.addon = "addon_updater_demo"
+updater.addon = 'io_mesh_w3d'
 
 
 # -----------------------------------------------------------------------------
@@ -96,9 +98,9 @@ def get_user_preferences(context=None):
 		context = bpy.context
 	prefs = None
 	if hasattr(context, "user_preferences"):
-		prefs = context.user_preferences.addons.get(__package__, None)
+		prefs = context.user_preferences.addons.get(_package, None)
 	elif hasattr(context, "preferences"):
-		prefs = context.preferences.addons.get(__package__, None)
+		prefs = context.preferences.addons.get(_package, None)
 	if prefs:
 		return prefs.preferences
 	# To make the addon stable and non-exception prone, return None
@@ -216,7 +218,7 @@ class addon_updater_install_popup(bpy.types.Operator):
 
 # User preference check-now operator
 class addon_updater_check_now(bpy.types.Operator):
-	bl_label = "Check now for "+updater.addon+" update"
+	bl_label = "Check now for update"
 	bl_idname = updater.addon+".updater_check_now"
 	bl_description = "Check now for an update to the {x} addon".format(
 														x=updater.addon)
@@ -236,8 +238,7 @@ class addon_updater_check_now(bpy.types.Operator):
 		settings = get_user_preferences(context)
 		if not settings:
 			if updater.verbose:
-				print("Could not get {} preferences, update check skipped".format(
-					__package__))
+				print("Could not get {} preferences, update check skipped".format(_package))
 			return {'CANCELLED'}
 		updater.set_check_interval(enable=settings.auto_check_update,
 					months=settings.updater_intrval_months,
@@ -802,8 +803,7 @@ def check_for_update_nonthreaded(self, context):
 	settings = get_user_preferences(bpy.context)
 	if not settings:
 		if updater.verbose:
-			print("Could not get {} preferences, update check skipped".format(
-				__package__))
+			print("Could not get {} preferences, update check skipped".format(_package))
 		return
 	updater.set_check_interval(enable=settings.auto_check_update,
 				months=settings.updater_intrval_months,
@@ -1336,21 +1336,21 @@ def register(bl_info):
 	updater.private_token = None # "tokenstring"
 
 	# choose your own username, must match website (not needed for GitLab)
-	updater.user = "cgcookie"
+	updater.user = "OpenSAGE"
 
 	# choose your own repository, must match git name for GitHUb and Bitbucket,
 	# for GitLab use project ID (numbers only)
-	updater.repo = "blender-addon-updater"
+	updater.repo = "OpenSAGE.BlenderPlugin"
 
 	#updater.addon = # define at top of module, MUST be done first
 
 	# Website for manual addon download, optional but recommended to set
-	updater.website = "https://github.com/CGCookie/blender-addon-updater/"
+	updater.website = "https://github.com/OpenSAGE/OpenSAGE.BlenderPlugin"
 
 	# Addon subfolder path
 	# "sample/path/to/addon"
 	# default is "" or None, meaning root
-	updater.subfolder_path = ""
+	updater.subfolder_path = "io_mesh_w3d"
 
 	# used to check/compare versions
 	updater.current_version = bl_info["version"]
@@ -1369,7 +1369,7 @@ def register(bl_info):
 	# Needs to be within the same folder as the addon itself
 	# Need to supply a full, absolute path to folder
 	# updater.updater_path = # set path of updater folder, by default:
-	#			/addons/{__package__}/{__package__}_updater
+	#			/addons/{_package}/{_package}_updater
 
 	# auto create a backup of the addon when installing other versions
 	updater.backup_current = True # True by default
@@ -1437,7 +1437,7 @@ def register(bl_info):
 	# updater.include_branch_list defaults to ['master'] branch if set to none
 	# example targeting another multiple branches allowed to pull from
 	# updater.include_branch_list = ['master', 'dev'] # example with two branches
-	updater.include_branch_list = None  # None is the equivalent to setting ['master']
+	updater.include_branch_list = ['master']  # None is the equivalent to setting ['master']
 
 	# Only allow manual install, thus prompting the user to open
 	# the addon's web page to download, specifically: updater.website
